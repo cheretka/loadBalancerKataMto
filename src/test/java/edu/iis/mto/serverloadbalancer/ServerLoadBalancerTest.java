@@ -33,6 +33,7 @@ public class ServerLoadBalancerTest {
     public void balancingOneServerWithOneSlotCapacity_andOneSlotVm_fillsTheServerWithTheVm() {
         Server theServer = a(server().withCapacity(1));
         Vm theVm = a(vm().ofSize(1));
+
         balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
 
         assertThat(theServer, hasLoadPercentageOf(100.0d));
@@ -43,11 +44,11 @@ public class ServerLoadBalancerTest {
     public void balancingOneServerWithTenSlotsCapacity_andOneSlotVm_fillTheServerWithTenPercent() {
         Server theServer = a(server().withCapacity(10));
         Vm theVm = a(vm().ofSize(1));
+
         balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
 
         assertThat(theServer, hasLoadPercentageOf(10.0d));
         assertThat("the server should contain vm", theServer.contains(theVm));
-
     }
 
     @Test
@@ -55,12 +56,12 @@ public class ServerLoadBalancerTest {
         Server theServer = a(server().withCapacity(100));
         Vm theFirstVm = a(vm().ofSize(1));
         Vm theSecondVm = a(vm().ofSize(1));
+
         balance(aListOfServersWith(theServer), aListOfVmsWith(theFirstVm, theSecondVm));
 
         assertThat(theServer, hasVmsCountOf(2));
         assertThat("the server should contain vm", theServer.contains(theFirstVm));
         assertThat("the server should contain vm", theServer.contains(theSecondVm));
-
     }
 
     @Test
@@ -72,7 +73,16 @@ public class ServerLoadBalancerTest {
         balance(aListOfServersWith(moreLoadedServer, lessLoadedServer), aListOfVmsWith(theVm));
 
         assertThat("the less loaded server should contain vm", lessLoadedServer.contains(theVm));
+    }
 
+    @Test
+    public void balanceAServerWithNotEnoughRoom_shouldNotBeFilledWithAVm(){
+        Server theServer = a(server().withCapacity(10).withCurrentLoadOf(90.0d));
+        Vm theVm = a(vm().ofSize(2));
+
+        balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
+
+        assertThat("the less loaded server should not contain vm", !theServer.contains(theVm));
     }
 
     private void balance(Server[] servers, Vm[] vms) {
