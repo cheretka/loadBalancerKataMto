@@ -76,7 +76,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void balanceAServerWithNotEnoughRoom_shouldNotBeFilledWithAVm(){
+    public void balanceAServerWithNotEnoughRoom_shouldNotBeFilledWithAVm() {
         Server theServer = a(server().withCapacity(10).withCurrentLoadOf(90.0d));
         Vm theVm = a(vm().ofSize(2));
 
