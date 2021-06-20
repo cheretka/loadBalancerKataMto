@@ -7,6 +7,7 @@ import static edu.iis.mto.serverloadbalancer.VmBuilder.vm;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import java.net.ServerSocket;
@@ -38,7 +39,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void balancingOneServerWithTenSlotsCapacity_andOneSlotVm_fillTheServerWithTenPercent(){
+    public void balancingOneServerWithTenSlotsCapacity_andOneSlotVm_fillTheServerWithTenPercent() {
         Server theServer = a(server().withCapacity(10));
         Vm theVm = a(vm().ofSize(1));
         balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
@@ -49,7 +50,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void balancingAServerWithEnoughRoom_getsFilledWithAllVms(){
+    public void balancingAServerWithEnoughRoom_getsFilledWithAllVms() {
         Server theServer = a(server().withCapacity(100));
         Vm theFirstVm = a(vm().ofSize(1));
         Vm theSecondVm = a(vm().ofSize(1));
@@ -61,21 +62,24 @@ public class ServerLoadBalancerTest {
 
     }
 
-
+    private Matcher<? super Server> hasVmsCountOf(int exprctedCount) {
+        return new ServerVmsCountMatcher(exprctedCount);
+    }
 
     private void balance(Server[] servers, Vm[] vms) {
         new ServerLoadBalancer().balance(servers, vms);
     }
 
-    private Vm[] aListOfVmsWith(Vm vm) {
-        return new Vm[] { vm };
+    private Vm[] aListOfVmsWith(Vm... vms) {
+        return vms;
     }
 
     private Vm[] anEmptyListOfVms() {
         return new Vm[0];
     }
+
     private Server[] aListOfServersWith(Server server) {
-        return new Server[] { server };
+        return new Server[]{server};
     }
 
     private <T> T a(Builder<T> builder) {
