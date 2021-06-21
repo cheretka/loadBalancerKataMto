@@ -4,7 +4,6 @@ import static edu.iis.mto.serverloadbalancer.CurrentLoadPercentageMatcher.hasLoa
 import static edu.iis.mto.serverloadbalancer.ServerBuilder.server;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.theInstance;
 
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ public class ServerLoadBalancerTest {
 	@Test
 	public void When_ServerAndVmHaveSameSize_Expect_FullLoadPercentage() {
 		Server theServer = a(server().withCapacity(1));
-		Vm theVm = a(vm().withSize(1));
+		Vm theVm = a(VmBuilder.vm().withSize(1));
 
 		balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
 
@@ -34,13 +33,9 @@ public class ServerLoadBalancerTest {
 		assertThat("server contains vm", theServer.contains(theVm));
 	}
 
-	private Vm a(VmBuilder builder) {
-		return builder.build();
-	}
-
-	private VmBuilder vm() {
-		return new VmBuilder();
-	}
+//	private Vm a(VmBuilder builder) {
+//		return builder.build();
+//	}
 
 	private Vm[] aListOfVmsWith(Vm vm) {
 		return new Vm[]{vm};
@@ -58,8 +53,13 @@ public class ServerLoadBalancerTest {
 		return new Server[] { server };
 	}
 
-	private Server a(ServerBuilder builder) {
+//	private Server a(ServerBuilder builder) {
+//		return builder.build();
+//	}
+
+	private <T> T a(Builder<T> builder) {
 		return builder.build();
 	}
+
 
 }
