@@ -6,7 +6,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 public class ServerVmsCountMatcher extends TypeSafeMatcher<Server> {
 
-	private int expectedCount;
+	private final int expectedCount;
 
 	public ServerVmsCountMatcher(int expectedCount) {
 		this.expectedCount = expectedCount;

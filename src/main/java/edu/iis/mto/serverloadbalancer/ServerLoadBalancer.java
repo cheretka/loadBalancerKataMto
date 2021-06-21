@@ -35,7 +35,7 @@ public class ServerLoadBalancer {
 		Server lessLoaded = null;
 		for (Server server : servers) {
 			if (lessLoaded == null
-					|| lessLoaded.getCurrentLoadPecentage() > server.getCurrentLoadPecentage()) {
+					|| lessLoaded.getCurrentLoadPercentage() > server.getCurrentLoadPercentage()) {
 				lessLoaded = server;
 			}
 		}
