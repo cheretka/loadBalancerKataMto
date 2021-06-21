@@ -7,18 +7,27 @@ public class ServerLoadBalancer {
 
 	public void balance(Server[] servers, Vm[] vms) {
 		for (Vm vm : vms) {
-			List<Server> serversThatCanFitVm = new ArrayList<>();
-
-			for(Server server: servers){
-				if(server.canFit(vm))
-					serversThatCanFitVm.add(server);
-			}
-
-			Server lessLoaded = extractLessLoadedServer(serversThatCanFitVm);
-			if(lessLoaded!=null)
-				lessLoaded.addVm(vm);
+			addToCapableLessLoadedServer(servers, vm);
 		}
 
+	}
+
+	private void addToCapableLessLoadedServer(Server[] servers, Vm vm) {
+		List<Server> serversThatCanFitVm = findServersWithEnoughCapacity(servers, vm);
+
+		Server lessLoaded = extractLessLoadedServer(serversThatCanFitVm);
+		if(lessLoaded!=null)
+			lessLoaded.addVm(vm);
+	}
+
+	private List<Server> findServersWithEnoughCapacity(Server[] servers, Vm vm) {
+		List<Server> serversThatCanFitVm = new ArrayList<>();
+
+		for(Server server: servers){
+			if(server.canFit(vm))
+				serversThatCanFitVm.add(server);
+		}
+		return serversThatCanFitVm;
 	}
 
 	private Server extractLessLoadedServer(List<Server> servers) {
