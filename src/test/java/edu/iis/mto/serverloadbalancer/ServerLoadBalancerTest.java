@@ -70,6 +70,19 @@ public class ServerLoadBalancerTest {
 
 	}
 
+	@Test
+	public void When_VmsSizeIsBiggerThanServersCapacity_Expect_ServerIsNotFilledWithVm(){
+		Server theServer = a(server().withCapacity(10).withCurrentLoadOf(90.0f));
+		Vm theVm = a(vm().ofSize(2));
+
+		balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
+
+		assertThat(theServer, hasLoadPercentageOf(90.0d));
+		assertThat("the server should contain vm", !theServer.contains(theVm));
+
+	}
+
+
 	private void balance(Server[] servers, Vm[] vms) {
 		new ServerLoadBalancer().balance(servers, vms);
 	}
