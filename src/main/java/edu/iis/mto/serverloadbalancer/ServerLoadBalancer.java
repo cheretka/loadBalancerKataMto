@@ -9,7 +9,6 @@ public class ServerLoadBalancer {
         for (Vm vm : vms) {
             addToCapableLessLoadedServer(servers, vm);
         }
-
     }
 
     private void addToCapableLessLoadedServer(Server[] servers, Vm vm) {

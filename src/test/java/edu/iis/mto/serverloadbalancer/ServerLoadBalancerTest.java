@@ -28,7 +28,7 @@ public class ServerLoadBalancerTest {
     @Test
     public void When_ServerAndVmAreSameSize_Expect_FullLoadPercentage() {
         Server theServer = build(server().withCapacity(1));
-        Vm theVm = build(vm().ofSize(1));
+        Vm theVm = build(vm().withSize(1));
 
         balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
 
@@ -39,7 +39,7 @@ public class ServerLoadBalancerTest {
     @Test
     public void When_ServerAndVm_Expect_PartLoadPercentage() {
         Server theServer = build(server().withCapacity(10));
-        Vm theVm = build(vm().ofSize(1));
+        Vm theVm = build(vm().withSize(1));
 
         balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
 
@@ -50,8 +50,8 @@ public class ServerLoadBalancerTest {
     @Test
     public void When_ServerAndTwoVm_Expect_PartLoadPercentage() {
         Server theServer = build(server().withCapacity(100));
-        Vm theFirstVm = build(vm().ofSize(1));
-        Vm theSecondVm = build(vm().ofSize(1));
+        Vm theFirstVm = build(vm().withSize(1));
+        Vm theSecondVm = build(vm().withSize(1));
 
         balance(aListOfServersWith(theServer), aListOfVmsWith(theFirstVm, theSecondVm));
 
@@ -64,7 +64,7 @@ public class ServerLoadBalancerTest {
     public void When_TwoServersAndVm_Expect_BalancedOnLessLoadedServer() {
         Server lessLoadedServer = build(server().withCapacity(100).withCurrentLoadOf(45.0d));
         Server moreLoadedServer = build(server().withCapacity(100).withCurrentLoadOf(50.0d));
-        Vm theVm = build(vm().ofSize(10));
+        Vm theVm = build(vm().withSize(10));
 
         balance(aListOfServersWith(moreLoadedServer, lessLoadedServer), aListOfVmsWith(theVm));
 
@@ -74,7 +74,7 @@ public class ServerLoadBalancerTest {
     @Test
     public void When_VmsSizeIsBiggerThanServersCapacity_Expect_NotFillServer() {
         Server theServer = build(server().withCapacity(10).withCurrentLoadOf(90.0d));
-        Vm theVm = build(vm().ofSize(2));
+        Vm theVm = build(vm().withSize(2));
 
         balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
 
@@ -85,9 +85,9 @@ public class ServerLoadBalancerTest {
     public void When_MultipleServersAndVms_Expect_balancedBetweenServers() {
         Server server1 = build(server().withCapacity(4));
         Server server2 = build(server().withCapacity(6));
-        Vm vm1 = build(vm().ofSize(1));
-        Vm vm2 = build(vm().ofSize(4));
-        Vm vm3 = build(vm().ofSize(2));
+        Vm vm1 = build(vm().withSize(1));
+        Vm vm2 = build(vm().withSize(4));
+        Vm vm3 = build(vm().withSize(2));
 
         balance(aListOfServersWith(server1, server2), aListOfVmsWith(vm1, vm2, vm3));
 
