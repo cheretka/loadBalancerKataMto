@@ -59,7 +59,7 @@ public class ServerLoadBalancerTest {
 	}
 
 	@Test
-	public void When_ThereAreTwoServers_Expact_VmBalancedOnLessLoadedOne(){
+	public void When_ThereAreTwoServers_Expect_VmBalancedOnLessLoadedOne(){
 		Server lessLoadedServer = a(server().withCapacity(10).withLoadPercentage(45.0d));
 		Server moreLoadedServer = a(server().withCapacity(10).withLoadPercentage(50.0d));
 		Vm theVm = a(vm().ofSize(1));
@@ -81,8 +81,8 @@ public class ServerLoadBalancerTest {
 		return new Vm[0];
 	}
 
-	private Server[] aListOfServersWith(Server server) {
-		return new Server[] { server };
+	private Server[] aListOfServersWith(Server... servers) {
+		return servers;
 	}
 
 	private <T> T a(Builder<T> builder) {

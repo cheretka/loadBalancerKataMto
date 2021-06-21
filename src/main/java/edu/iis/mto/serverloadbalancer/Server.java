@@ -8,14 +8,14 @@ public class Server {
 	private static final double MAXIMUM_LOAD = 100.0d;
 	public double currentLoadPecentage;
 	private int capacity;
-	private List<Vm> vms = new ArrayList<Vm>();
+	private List<Vm> vms = new ArrayList<>();
 
 	public Server(int capacity) {
 		this.capacity = capacity;
 	}
 
 	public boolean contains(Vm vm) {
-		return true;
+		return vms.contains(vm);
 	}
 
 	public void addVm(Vm vm) {
@@ -28,4 +28,7 @@ public class Server {
 		return vms.size();
 	}
 
+	public int getCapacity() {
+		return capacity;
+	}
 }
